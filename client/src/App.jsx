@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 
-import { signOut, verify } from './services/api';
+import { signOut, verify } from './services/authentication';
 
 import Home from './views/Home';
 import SignIn from './views/SignIn';
 import SignUp from './views/SignUp';
-import Private from './views/Private';
+// import Private from './views/Private';
+import CreatePet from './views/CreatePet';
+import SinglePet from './views/SinglePet';
 
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -32,18 +34,21 @@ class App extends Component {
   };
 
   render() {
+    const user = this.state.user;
     return (
       <BrowserRouter>
         <nav>
           <Link to="/">Home</Link>
-          {(this.state.user && (
+          {(user && (
             <>
-              <img
-                src={this.state.user.profilePicture}
-                alt={this.state.user.name}
-              />
-              <span>{this.state.user.name}</span>
-              <Link to="/private">Private</Link>
+              {user.profilePicture && (
+                <img src={user.profilePicture} alt={user.name} />
+              )}
+              <span>{user.name}</span>
+              {/* <Link to="/private">Private</Link> */}
+              {user.role === 'shelter' && (
+                <Link to="/pet/create">Create Pet</Link>
+              )}
               <button onClick={this.handleSignOut}>Sign Out</button>
             </>
           )) || (
@@ -71,12 +76,20 @@ class App extends Component {
               exact
             />
             <ProtectedRoute
-              path="/private"
-              render={props => <Private {...props} user={this.state.user} />}
+              path="/pet/create"
+              component={CreatePet}
               exact
-              authorized={this.state.user}
+              authorized={user && user.role === 'shelter'}
               redirect="/sign-in"
             />
+            <Route path="/pet/:id" component={SinglePet} exact />
+            {/* <ProtectedRoute
+              path="/private"
+              render={props => <Private {...props} user={user} />}
+              exact
+              authorized={user}
+              redirect="/sign-in"
+            /> */}
           </Switch>
         )}
       </BrowserRouter>

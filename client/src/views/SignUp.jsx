@@ -1,30 +1,18 @@
 import React, { Component } from 'react';
-import { signUp } from './../services/api';
+import { signUp } from './../services/authentication';
 
 class SignUp extends Component {
   state = {
     name: '',
     email: '',
     password: '',
-    picture: ''
+    role: ''
   };
 
   handleFormSubmission = async event => {
     event.preventDefault();
-    const { name, email, password, picture } = this.state;
-    // If we want to send a file with the request body
-    // we cannot send a simple object
-    // we need to send an object instantiated from FormData
-    const data = new FormData();
-    // data.append('name', name);
-    // data.append('email', email);
-    // data.append('password', password);
-    // data.append('picture', picture);
-    const values = { name, email, password, picture };
-    for (let key in values) {
-      data.append(key, values[key]);
-    }
-    const user = await signUp(data);
+    const { name, email, password, role } = this.state;
+    const user = await signUp({ name, email, password, role });
     this.props.onUserChange(user);
   };
 
@@ -32,14 +20,6 @@ class SignUp extends Component {
     const { name, value } = event.target;
     this.setState({
       [name]: value
-    });
-  };
-
-  handleFileInputChange = event => {
-    const { name, files } = event.target;
-    const file = files[0];
-    this.setState({
-      [name]: file
     });
   };
 
@@ -54,6 +34,7 @@ class SignUp extends Component {
             type="text"
             placeholder="James Dean"
             name="name"
+            required
             value={this.state.name}
             onChange={this.handleInputChange}
           />
@@ -64,17 +45,27 @@ class SignUp extends Component {
             type="email"
             placeholder="james@example.com"
             name="email"
+            required
             value={this.state.email}
             onChange={this.handleInputChange}
           />
 
-          <label htmlFor="profile-picture-input">Profile Picture</label>
-          <input
-            id="profile-picture-input"
-            type="file"
-            name="picture"
-            onChange={this.handleFileInputChange}
-          />
+          <label htmlFor="role-input">
+            Are you an individual or a shelter?
+          </label>
+          <select
+            id="role-input"
+            name="role"
+            required
+            value={this.state.role}
+            onChange={this.handleInputChange}
+          >
+            <option value="" disabled>
+              Individual or a shelter?
+            </option>
+            <option value="shelter">Shelter</option>
+            <option value="individual">Individual</option>
+          </select>
 
           <label htmlFor="password-input">Password</label>
           <input
@@ -82,6 +73,7 @@ class SignUp extends Component {
             type="password"
             placeholder="A secure password"
             name="password"
+            required
             value={this.state.password}
             onChange={this.handleInputChange}
           />

@@ -48,11 +48,22 @@ form {
 }
 
 input,
-button {
+button,
+select,
+textarea {
   padding: 1em;
   border: 1px solid hsl(200, 25%, 30%);
   margin-bottom: 1em;
   border-radius: 0;
   background-color: transparent;
   font: inherit;
+  color: inherit;
+  &:disabled {
+    opacity: 0.5;
+  }
 }
+
+// input:disabled,
+// button:disabled,
+// select:disabled {
+// }
