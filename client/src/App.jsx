@@ -9,6 +9,7 @@ import SignUp from './views/SignUp';
 // import Private from './views/Private';
 import CreatePet from './views/CreatePet';
 import SinglePet from './views/SinglePet';
+import Demo from './views/Demo';
 
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -83,6 +84,7 @@ class App extends Component {
               redirect="/sign-in"
             />
             <Route path="/pet/:id" component={SinglePet} exact />
+            <Route path="/demo" component={Demo} exact />
             {/* <ProtectedRoute
               path="/private"
               render={props => <Private {...props} user={user} />}

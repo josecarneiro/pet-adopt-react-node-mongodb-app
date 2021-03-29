@@ -1,3 +1,7 @@
+# Adopt Pet React + Node App
+
+Here's the plan for the app.
+
 ## Models
 
 ### User
@@ -69,3 +73,13 @@
 | Random Pet | /pet/random | Show random pet |
 | Sign Up | /sign-up | Sign Up |
 | Sign In | /sign-in | Sign In |
+
+## To dos
+
+- Add donation button in shelter page, opens `/shelter/donate` page
+- Add sample.env file
+- Ensure mobile first development with desktop-friendliness
+
+## Wishlist
+
+- Add Material Icons
