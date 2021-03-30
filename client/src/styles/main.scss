@@ -1,0 +1,141 @@
+@import 'variables';
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  max-width: 40em;
+  margin: 0 auto;
+  padding: 0 1em;
+  font-family: $font-body;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  margin-bottom: 1rem;
+  line-height: 1;
+}
+
+img {
+  max-width: 100%;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
+  img {
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    box-shadow: 0 0.125em 0.75em -0.5em $color-shadow;
+    margin-right: 1em;
+  }
+  a {
+    display: inline-flex;
+    padding: 1em 0;
+  }
+  button {
+    margin-bottom: 0;
+  }
+  a,
+  button,
+  span {
+    margin-right: 1em;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input,
+button,
+select,
+textarea {
+  padding: 1em;
+  border: 0;
+  margin-bottom: 1em;
+  border-radius: 0;
+  background-color: transparent;
+  font: inherit;
+  color: inherit;
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+label {
+  margin-bottom: 0.5em;
+  font-size: 0.875em;
+}
+
+input,
+select,
+textarea {
+  box-shadow: 0.125em 0 0.75em -0.25em $color-shadow;
+  border-radius: 0.25em;
+}
+
+button {
+  cursor: pointer;
+}
+
+.button {
+  padding: 0.75em 1em;
+  border-radius: 0.5em;
+  background-color: $color-primary;
+  color: white;
+  border: 0;
+}
+
+.pet__list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -0.5em;
+  .pet__item {
+    margin-right: 0.5em;
+    margin-left: 0.5em;
+  }
+}
+
+main {
+  & > header {
+    margin: 2em 0;
+    margin-bottom: 4em;
+  }
+}
+
+.row {
+  display: flex;
+  margin: 0 -0.5em;
+  flex-direction: column;
+  @media (min-width: 30em) {
+    flex-direction: row;
+  }
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: 0 0.5em;
+}

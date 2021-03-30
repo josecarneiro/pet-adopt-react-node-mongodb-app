@@ -18,7 +18,7 @@ const individualSchema = new mongoose.Schema({
       type: [String],
       enum: PET_QUALITIES
     },
-    steralized: {
+    sterilized: {
       type: Boolean
     }
   }

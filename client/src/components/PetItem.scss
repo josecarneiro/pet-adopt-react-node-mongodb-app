@@ -1,0 +1,28 @@
+@import './../styles/variables.scss';
+
+.pet__item {
+  width: 12em;
+  border-radius: 0.75em;
+  overflow: hidden;
+  box-shadow: 0.125em 0 0.75em -0.25em $color-shadow;
+  margin-bottom: 1em;
+  img {
+    width: 100%;
+    height: 12em;
+    object-fit: cover;
+  }
+}
+
+.pet__item__details {
+  padding: 1em;
+  h5 {
+    font-size: 1.125em;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.pet__standin-picture {
+  width: 100%;
+  height: 12em;
+  background-color: rgb(255, 243, 175);
+}

@@ -15,7 +15,7 @@ class SinglePet extends Component {
   render() {
     const pet = this.state.pet;
     return (
-      <div>
+      <main>
         {pet && (
           <>
             <h1>{pet.name}</h1>
@@ -32,7 +32,7 @@ class SinglePet extends Component {
             <span>{pet.species}</span>
           </>
         )}
-      </div>
+      </main>
     );
   }
 }

@@ -2,10 +2,12 @@
 
 const express = require('express');
 const Pet = require('./../models/pet');
+const fileUpload = require('./../middleware/file-upload');
 
 const router = new express.Router();
 
-router.post('/', async (req, res, next) => {
+router.post('/', fileUpload.array('pictures', 10), async (req, res, next) => {
+  const pictures = req.files.map((file) => file.path);
   const {
     name,
     species,
@@ -14,7 +16,7 @@ router.post('/', async (req, res, next) => {
     size,
     gender,
     qualities,
-    steralized,
+    sterilized,
     conditions,
     description
   } = req.body;
@@ -27,10 +29,11 @@ router.post('/', async (req, res, next) => {
       size,
       gender,
       qualities,
-      steralized,
+      sterilized,
       conditions,
       description,
-      shelter: req.user._id
+      shelter: req.user._id,
+      pictures
     });
     res.json({ pet });
   } catch (error) {
@@ -40,7 +43,7 @@ router.post('/', async (req, res, next) => {
 
 router.get('/list', async (req, res, next) => {
   try {
-    const pets = await Pet.find().limit(20);
+    const pets = await Pet.find().sort({ addedDate: -1 }).limit(20);
     res.json({ pets });
   } catch (error) {
     next(error);

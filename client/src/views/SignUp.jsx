@@ -25,8 +25,10 @@ class SignUp extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Sign Up</h1>
+      <main>
+        <header>
+          <h1>Sign Up</h1>
+        </header>
         <form onSubmit={this.handleFormSubmission}>
           <label htmlFor="name-input">Name</label>
           <input
@@ -80,7 +82,7 @@ class SignUp extends Component {
 
           <button>Sign Up</button>
         </form>
-      </div>
+      </main>
     );
   }
 }

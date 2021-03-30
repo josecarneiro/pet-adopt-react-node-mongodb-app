@@ -10,7 +10,7 @@ class CreatePet extends Component {
     size: '',
     gender: '',
     qualities: [],
-    steralized: false,
+    sterilized: false,
     conditions: [],
     description: ''
     // pictures: '',
@@ -26,11 +26,12 @@ class CreatePet extends Component {
       size,
       gender,
       qualities,
-      steralized,
+      sterilized,
       conditions,
-      description
+      description,
+      pictures
     } = this.state;
-    const pet = await createPet({
+    const data = {
       name,
       species,
       breed,
@@ -38,12 +39,27 @@ class CreatePet extends Component {
       size,
       gender,
       qualities,
-      steralized,
+      sterilized,
       conditions,
-      description
-    });
-    this.props.history.push('/');
-    // this.props.history.push(`/pet/${pet._id}`);
+      description,
+      pictures
+    };
+    const body = new FormData();
+    // To do:
+    // Figure out why form data request bodies with empty array
+    // sends empty string
+    for (let key in data) {
+      const value = data[key];
+      if (value instanceof Array) {
+        for (let item of value) {
+          body.append(key, item);
+        }
+      } else {
+        body.append(key, value);
+      }
+    }
+    const pet = await createPet(body);
+    this.props.history.push(`/pet/${pet._id}`);
   };
 
   handleInputChange = event => {
@@ -60,9 +76,21 @@ class CreatePet extends Component {
     });
   };
 
+  handleFileInputChange = event => {
+    const { name, files } = event.target;
+    const arrayOfFiles = [];
+    for (const file of files) arrayOfFiles.push(file);
+    this.setState({
+      [name]: arrayOfFiles
+    });
+  };
+
   render() {
     return (
-      <div>
+      <main>
+        <header>
+          <h1>Add a Pet for Adoption</h1>
+        </header>
         <form onSubmit={this.handleFormSubmission}>
           <label htmlFor="input-name">Name</label>
           <input
@@ -75,70 +103,90 @@ class CreatePet extends Component {
             required
           />
 
-          <label htmlFor="input-species">Species</label>
-          <select
-            id="input-species"
-            name="species"
-            value={this.state.species}
-            onChange={this.handleInputChange}
-            required
-          >
-            <option value="" disabled>
-              Species
-            </option>
-            <option value="dog">Dog</option>
-            <option value="cat">Cat</option>
-          </select>
+          <div className="row">
+            <div className="col">
+              <label htmlFor="input-species">Species</label>
+              <select
+                id="input-species"
+                name="species"
+                value={this.state.species}
+                onChange={this.handleInputChange}
+                required
+              >
+                <option value="" disabled>
+                  Species
+                </option>
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+              </select>
+            </div>
+            <div className="col">
+              <label htmlFor="input-breed">Breed</label>
+              <input
+                id="input-breed"
+                name="breed"
+                type="text"
+                placeholder="Breed"
+                value={this.state.breed}
+                onChange={this.handleInputChange}
+              />
+            </div>
+          </div>
 
-          <label htmlFor="input-breed">Breed</label>
+          <div className="row">
+            <div className="col">
+              <label htmlFor="input-age">Age</label>
+              <input
+                id="input-age"
+                name="age"
+                type="number"
+                placeholder="Age"
+                min="0"
+                value={this.state.age}
+                onChange={this.handleInputChange}
+                required
+              />
+            </div>
+            <div className="col">
+              <label htmlFor="input-size">Size</label>
+              <select
+                id="input-size"
+                name="size"
+                value={this.state.size}
+                onChange={this.handleInputChange}
+                required
+              >
+                <option value="" disabled>
+                  Size
+                </option>
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+              </select>
+            </div>
+            <div className="col">
+              <label htmlFor="input-gender">Gender</label>
+              <select
+                id="input-gender"
+                name="gender"
+                value={this.state.gender}
+                onChange={this.handleInputChange}
+              >
+                <option value="">Non-specied</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+              </select>
+            </div>
+          </div>
+
+          <label htmlFor="input-sterilized">Sterilized</label>
           <input
-            id="input-breed"
-            name="breed"
-            type="text"
-            placeholder="Breed"
-            value={this.state.breed}
-            onChange={this.handleInputChange}
+            id="input-sterilized"
+            name="sterilized"
+            type="checkbox"
+            value={this.state.sterilized}
+            onChange={this.handleCheckboxInputChange}
           />
-
-          <label htmlFor="input-age">Age</label>
-          <input
-            id="input-age"
-            name="age"
-            type="number"
-            placeholder="Age"
-            min="0"
-            value={this.state.age}
-            onChange={this.handleInputChange}
-            required
-          />
-
-          <label htmlFor="input-size">Size</label>
-          <select
-            id="input-size"
-            name="size"
-            value={this.state.size}
-            onChange={this.handleInputChange}
-            required
-          >
-            <option value="" disabled>
-              Size
-            </option>
-            <option value="small">Small</option>
-            <option value="medium">Medium</option>
-            <option value="large">Large</option>
-          </select>
-
-          <label htmlFor="input-gender">Gender</label>
-          <select
-            id="input-gender"
-            name="gender"
-            value={this.state.gender}
-            onChange={this.handleInputChange}
-          >
-            <option value="">Non-specied</option>
-            <option value="female">Female</option>
-            <option value="male">Male</option>
-          </select>
 
           <label htmlFor="input-qualities">Qualities</label>
           <input
@@ -149,15 +197,6 @@ class CreatePet extends Component {
             value={this.state.qualities}
             onChange={this.handleInputChange}
             disabled
-          />
-
-          <label htmlFor="input-steralized">Steralized</label>
-          <input
-            id="input-steralized"
-            name="steralized"
-            type="checkbox"
-            value={this.state.steralized}
-            onChange={this.handleCheckboxInputChange}
           />
 
           <label htmlFor="input-conditions">Conditions</label>
@@ -171,6 +210,16 @@ class CreatePet extends Component {
             disabled
           />
 
+          <label htmlFor="input-pictures">Pictures</label>
+          <input
+            id="input-pictures"
+            type="file"
+            name="pictures"
+            multiple
+            required
+            onChange={this.handleFileInputChange}
+          />
+
           <label htmlFor="input-description">Description</label>
           <textarea
             id="input-description"
@@ -182,7 +231,7 @@ class CreatePet extends Component {
 
           <button>Create Pet</button>
         </form>
-      </div>
+      </main>
     );
   }
 }

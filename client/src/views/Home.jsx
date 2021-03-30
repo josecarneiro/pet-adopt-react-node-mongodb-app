@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { listPets } from './../services/pet';
+import PetItem from './../components/PetItem';
 
 class Home extends Component {
   state = {
@@ -14,25 +15,18 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Home</h1>
-        {this.state.pets.map(pet => (
-          <Link to={`/pet/${pet._id}`}>
-            <img
-              src="https://source.unsplash.com/200x200/?dog"
-              alt={pet.name}
-            />
-            <h4>{pet.name}</h4>
-            <span>{pet.size}</span>
-            <br />
-            <span>{pet.age}</span>
-            <br />
-            <span>{pet.breed}</span>
-            <br />
-            <span>{pet.species}</span>
-          </Link>
-        ))}
-      </div>
+      <main>
+        <header>
+          <h1>Choose a pet below</h1>
+        </header>
+        <div className="pet__list">
+          {this.state.pets.map(pet => (
+            <Link to={`/pet/${pet._id}`}>
+              <PetItem pet={pet} />
+            </Link>
+          ))}
+        </div>
+      </main>
     );
   }
 }

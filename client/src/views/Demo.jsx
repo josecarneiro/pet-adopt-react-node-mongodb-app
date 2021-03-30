@@ -30,20 +30,7 @@ const Demo = () => (
   <>
     <main>
       <h1>Pet List</h1>
-      <a href="#">
-        <div className="pet-item">
-          <img
-            src={`https://source.unsplash.com/${PICTURES.DOGS[0]}/600x800`}
-            alt=""
-          />
-          <div className="pet-item__details">
-            <h5>Jimmy</h5>
-            <small>
-              <span>Pug</span> | <span>3 Years Old</span> | <span>Male</span>
-            </small>
-          </div>
-        </div>
-      </a>
+      <a href="#"></a>
     </main>
     <main className="pet">
       <h1>Single Pet</h1>

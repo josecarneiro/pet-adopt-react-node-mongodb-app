@@ -6,10 +6,11 @@ import { signOut, verify } from './services/authentication';
 import Home from './views/Home';
 import SignIn from './views/SignIn';
 import SignUp from './views/SignUp';
-// import Private from './views/Private';
 import CreatePet from './views/CreatePet';
 import SinglePet from './views/SinglePet';
 import Demo from './views/Demo';
+import IndividualProfile from './views/IndividualProfile';
+import ShelterProfile from './views/ShelterProfile';
 
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -45,10 +46,17 @@ class App extends Component {
               {user.profilePicture && (
                 <img src={user.profilePicture} alt={user.name} />
               )}
-              <span>{user.name}</span>
-              {/* <Link to="/private">Private</Link> */}
+
               {user.role === 'shelter' && (
-                <Link to="/pet/create">Create Pet</Link>
+                <>
+                  <Link to={`/shelter/${user._id}`}>{user.name}</Link>
+                  <Link to="/pet/create">Create Pet</Link>
+                </>
+              )}
+              {user.role === 'individual' && (
+                <>
+                  <Link to={`/individual/${user._id}`}>{user.name}</Link>
+                </>
               )}
               <button onClick={this.handleSignOut}>Sign Out</button>
             </>
@@ -84,6 +92,8 @@ class App extends Component {
               redirect="/sign-in"
             />
             <Route path="/pet/:id" component={SinglePet} exact />
+            <Route path="/individual/:id" component={IndividualProfile} exact />
+            <Route path="/shelter/:id" component={ShelterProfile} exact />
             <Route path="/demo" component={Demo} exact />
             {/* <ProtectedRoute
               path="/private"

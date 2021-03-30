@@ -23,8 +23,10 @@ class SignIn extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Sign In</h1>
+      <main>
+        <header>
+          <h1>Sign In</h1>
+        </header>
         <form onSubmit={this.handleFormSubmission}>
           <label htmlFor="email-input">Email</label>
           <input
@@ -48,7 +50,7 @@ class SignIn extends Component {
 
           <button>Sign In</button>
         </form>
-      </div>
+      </main>
     );
   }
 }
