@@ -53,7 +53,7 @@ Here's the plan for the app.
 
 | GET | /shelter/:id | Displays information about shelter user, lists shelter's pets | all | ❌ |
 
-| GET | /individual/:id | Displays information about any individual | all | ❌ |
+| GET | /individual/:id | Displays information about any individual | all | ✅ |
 
 | POST | /pet | Allows shelter user to add pet | shelter | ✅ |
 | GET | /pet/list | Provides all pets | all | ✅ |
@@ -73,16 +73,24 @@ Here's the plan for the app.
 | Edit Profile | /profile/edit | Profile Edit | ❌ |
 | Create Pet | /pet/create | Create pet | ✅ |
 | Pet | /pet/:id | Show page for pet | ✅ |
-| Edit Pet | /pet/:id/edit | Edit a single pet | ❌ |
-| Random Pet | /pet/random | Show random pet | ❌ |
+| Edit Pet | /pet/:id/edit | Edit a single pet | ✅ |
+| Random Pet | /pet/random | Show random pet | ✅ |
 | Sign Up | /sign-up | Sign Up | ✅ |
 | Sign In | /sign-in | Sign In | ✅ |
 
 ## To dos
 
 - Add donation button in shelter page, opens `/shelter/donate` page
+- Donation Page
+- Adopt Pet Page
+- Individual and Shelter profiles
+- PetList component
+- Random pet should be in accordance with user preferences
 - Add sample.env file
-- Ensure mobile first development with desktop-friendliness
+- Picture Slider
+- Payment Processor Component
+- Donation Model
+- Finish Single Pet page, display link to shelter
 
 ## Wishlist
 
