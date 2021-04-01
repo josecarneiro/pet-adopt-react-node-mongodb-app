@@ -3,16 +3,20 @@ import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 
 import { signOut, verify } from './services/authentication';
 
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+import ProtectedRoute from './components/ProtectedRoute';
+import Navbar from './components/Navbar';
+
 import Home from './views/Home';
 import SignIn from './views/SignIn';
 import SignUp from './views/SignUp';
 import CreatePet from './views/CreatePet';
 import SinglePet from './views/SinglePet';
+import RandomPet from './views/RandomPet';
 import Demo from './views/Demo';
 import IndividualProfile from './views/IndividualProfile';
 import ShelterProfile from './views/ShelterProfile';
-
-import ProtectedRoute from './components/ProtectedRoute';
+import IndividualPreferences from './views/IndividualPreferences';
 
 class App extends Component {
   state = {
@@ -38,73 +42,78 @@ class App extends Component {
   render() {
     const user = this.state.user;
     return (
-      <BrowserRouter>
-        <nav>
-          <Link to="/">Home</Link>
-          {(user && (
-            <>
-              {user.profilePicture && (
-                <img src={user.profilePicture} alt={user.name} />
-              )}
-
-              {user.role === 'shelter' && (
-                <>
-                  <Link to={`/shelter/${user._id}`}>{user.name}</Link>
-                  <Link to="/pet/create">Create Pet</Link>
-                </>
-              )}
-              {user.role === 'individual' && (
-                <>
-                  <Link to={`/individual/${user._id}`}>{user.name}</Link>
-                </>
-              )}
-              <button onClick={this.handleSignOut}>Sign Out</button>
-            </>
-          )) || (
-            <>
-              <Link to="/sign-in">Sign In</Link>
-              <Link to="/sign-up">Sign Up</Link>
-            </>
-          )}
-        </nav>
-        {this.state.loaded && (
-          <Switch>
-            <Route path="/" component={Home} exact />
-            <Route
-              path="/sign-in"
-              render={props => (
-                <SignIn {...props} onUserChange={this.handleUserChange} />
-              )}
-              exact
-            />
-            <Route
-              path="/sign-up"
-              render={props => (
-                <SignUp {...props} onUserChange={this.handleUserChange} />
-              )}
-              exact
-            />
-            <ProtectedRoute
-              path="/pet/create"
-              component={CreatePet}
-              exact
-              authorized={user && user.role === 'shelter'}
-              redirect="/sign-in"
-            />
-            <Route path="/pet/:id" component={SinglePet} exact />
-            <Route path="/individual/:id" component={IndividualProfile} exact />
-            <Route path="/shelter/:id" component={ShelterProfile} exact />
-            <Route path="/demo" component={Demo} exact />
-            {/* <ProtectedRoute
+      <HelmetProvider>
+        <BrowserRouter>
+          <Helmet>
+            <title>Pet Adopt</title>
+          </Helmet>
+          <Navbar user={user} onSignOut={this.handleSignOut} />
+          {this.state.loaded && (
+            <Switch>
+              <Route path="/" component={Home} exact />
+              <ProtectedRoute
+                path="/sign-in"
+                render={props => (
+                  <SignIn {...props} onUserChange={this.handleUserChange} />
+                )}
+                authorized={!user}
+                redirect="/"
+                exact
+              />
+              <ProtectedRoute
+                path="/sign-up"
+                render={props => (
+                  <SignUp {...props} onUserChange={this.handleUserChange} />
+                )}
+                authorized={!user}
+                redirect="/"
+                exact
+              />
+              <ProtectedRoute
+                path="/pet/create"
+                component={CreatePet}
+                authorized={user && user.role === 'shelter'}
+                redirect="/sign-in"
+                exact
+              />
+              <ProtectedRoute
+                path="/pet/random"
+                component={RandomPet}
+                authorized={user && user.role === 'individual'}
+                redirect="/sign-in"
+                exact
+              />
+              <Route path="/pet/:id" component={SinglePet} exact />
+              <Route
+                path="/individual/:id"
+                component={IndividualProfile}
+                exact
+              />
+              <Route path="/shelter/:id" component={ShelterProfile} exact />
+              <ProtectedRoute
+                path="/preferences"
+                render={props => (
+                  <IndividualPreferences
+                    {...props}
+                    onUserChange={this.handleUserChange}
+                  />
+                )}
+                authorized={user && user.role === 'individual'}
+                redirect="/sign-in"
+                exact
+              />
+              <Route path="/demo" component={Demo} exact />
+              {/* <ProtectedRoute
               path="/private"
               render={props => <Private {...props} user={user} />}
               exact
               authorized={user}
               redirect="/sign-in"
             /> */}
-          </Switch>
-        )}
-      </BrowserRouter>
+            </Switch>
+          )}
+        </BrowserRouter>
+      </HelmetProvider>
     );
   }
 }

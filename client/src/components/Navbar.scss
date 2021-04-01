@@ -1,0 +1,29 @@
+@import './../styles/variables.scss';
+
+.navbar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
+  img {
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    box-shadow: 0 0.125em 0.75em -0.5em $color-shadow;
+    margin-right: 1em;
+  }
+  a {
+    display: inline-flex;
+    padding: 1em 0;
+  }
+  button {
+    margin-bottom: 0;
+  }
+  a,
+  button,
+  span {
+    margin-right: 1em;
+  }
+  & > div {
+    margin-left: auto;
+  }
+}

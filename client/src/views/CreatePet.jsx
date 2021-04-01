@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { createPet } from './../services/pet';
+import CheckboxGroup from './../components/CheckboxGroup';
+import { qualitiesOptions } from './../common';
 
 class CreatePet extends Component {
   state = {
@@ -82,6 +84,12 @@ class CreatePet extends Component {
     for (const file of files) arrayOfFiles.push(file);
     this.setState({
       [name]: arrayOfFiles
+    });
+  };
+
+  handleCheckboxGroupChange = (name, values) => {
+    this.setState({
+      [name]: values
     });
   };
 
@@ -180,23 +188,24 @@ class CreatePet extends Component {
           </div>
 
           <label htmlFor="input-sterilized">Sterilized</label>
-          <input
-            id="input-sterilized"
-            name="sterilized"
-            type="checkbox"
-            value={this.state.sterilized}
-            onChange={this.handleCheckboxInputChange}
-          />
+          <div>
+            <input
+              id="input-sterilized"
+              name="sterilized"
+              type="checkbox"
+              value={this.state.sterilized}
+              onChange={this.handleCheckboxInputChange}
+            />
+            <label htmlFor="input-sterilized">Sterilized</label>
+          </div>
 
-          <label htmlFor="input-qualities">Qualities</label>
-          <input
-            id="input-qualities"
-            name="qualities"
-            type="text"
-            placeholder="Qualities"
-            value={this.state.qualities}
-            onChange={this.handleInputChange}
-            disabled
+          <label>Qualities</label>
+          <CheckboxGroup
+            options={qualitiesOptions}
+            values={this.state.qualities}
+            onUpdate={values =>
+              this.handleCheckboxGroupChange('qualities', values)
+            }
           />
 
           <label htmlFor="input-conditions">Conditions</label>

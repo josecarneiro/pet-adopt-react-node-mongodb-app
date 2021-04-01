@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { loadShelter } from '../services/shelter';
+import { Helmet } from 'react-helmet-async';
 
 class ShelterProfile extends Component {
   state = {
@@ -17,6 +18,9 @@ class ShelterProfile extends Component {
       <main>
         {shelter && (
           <>
+            <Helmet>
+              <title>Pet Adopt - {shelter.name}</title>
+            </Helmet>
             <h1>{shelter.name}</h1>
           </>
         )}

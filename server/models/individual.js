@@ -10,7 +10,7 @@ const individualSchema = new mongoose.Schema({
       type: [String],
       enum: PET_SPECIES
     },
-    size: {
+    sizes: {
       type: [String],
       enum: PET_SIZES
     },

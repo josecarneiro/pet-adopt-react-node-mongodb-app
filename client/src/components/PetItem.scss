@@ -6,10 +6,23 @@
   overflow: hidden;
   box-shadow: 0.125em 0 0.75em -0.25em $color-shadow;
   margin-bottom: 1em;
-  img {
+  img,
+  .pet__standin-picture {
     width: 100%;
     height: 12em;
     object-fit: cover;
+  }
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.pet__item--large {
+  width: 16em;
+  margin: 0 auto;
+  img,
+  .pet__standin-picture {
+    height: 14em;
   }
 }
 
@@ -22,7 +35,5 @@
 }
 
 .pet__standin-picture {
-  width: 100%;
-  height: 12em;
   background-color: rgb(255, 243, 175);
 }

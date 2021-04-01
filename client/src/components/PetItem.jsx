@@ -1,21 +1,13 @@
 import './PetItem.scss';
 
+import { getHumanReadableGender } from './../common';
+
 // const getHumanReadableGender = gender =>
 //   ({ male: 'Male', female: 'Female' }[gender]);
 
-const getHumanReadableGender = gender => {
-  const genderMap = { male: 'Male', female: 'Female' };
-  const humanReadableFormat = genderMap[gender];
-  return humanReadableFormat;
-};
-
-const PetItem = ({ pet }) => {
+const PetItem = ({ pet, size = 'medium' }) => {
   return (
-    <div className="pet__item">
-      {/* <img
-        src={`https://source.unsplash.com/5PVXkqt2s9k/600x800`}
-        alt={pet.name}
-      /> */}
+    <div className={`pet__item pet__item--${size}`}>
       {(!!pet.pictures.length && (
         <img src={pet.pictures[0]} alt={pet.name} />
       )) || <div className="pet__standin-picture"></div>}
@@ -25,6 +17,7 @@ const PetItem = ({ pet }) => {
           {pet.breed} | {pet.age} Years Old |{' '}
           {getHumanReadableGender(pet.gender)}
         </small>
+        {size === 'large' && pet.description && <p>{pet.description}</p>}
       </div>
     </div>
   );
