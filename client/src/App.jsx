@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import { signOut, verify } from './services/authentication';
 
@@ -18,6 +18,7 @@ import ShelterProfile from './views/ShelterProfile';
 import IndividualPreferences from './views/IndividualPreferences';
 import ShelterDonation from './views/ShelterDonation';
 import ShelterDonationThankYou from './views/ShelterDonationThankYou';
+import ErrorPage from './views/ErrorPage';
 
 class App extends Component {
   state = {
@@ -118,13 +119,8 @@ class App extends Component {
                 redirect="/sign-in"
                 exact
               />
-              {/* <ProtectedRoute
-              path="/private"
-              render={props => <Private {...props} user={user} />}
-              exact
-              authorized={user}
-              redirect="/sign-in"
-            /> */}
+              <Route path="/error" component={ErrorPage} />
+              <Redirect to="/error" />
             </Switch>
           )}
         </BrowserRouter>

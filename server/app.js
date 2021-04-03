@@ -12,7 +12,6 @@ const basicAuthenticationDeserializer = require('./middleware/basic-authenticati
 const bindUserToViewLocals = require('./middleware/bind-user-to-view-locals.js');
 const cors = require('cors');
 
-const baseRouter = require('./routes/index');
 const authenticationRouter = require('./routes/authentication');
 const petRouter = require('./routes/pet');
 const individualRouter = require('./routes/individual');
@@ -24,7 +23,7 @@ app.use(serveFavicon(path.join(__dirname, 'public/images', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(
   cors({
-    origin: ['http://localhost:3001'],
+    origin: (process.env.ALLOWED_CORS_ORIGINS || '').split(','),
     credentials: true
   })
 );
@@ -47,7 +46,6 @@ app.use(
 app.use(basicAuthenticationDeserializer);
 app.use(bindUserToViewLocals);
 
-app.use('/', baseRouter);
 app.use('/authentication', authenticationRouter);
 app.use('/pet', petRouter);
 app.use('/individual', individualRouter);

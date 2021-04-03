@@ -6,27 +6,19 @@ const Pet = require('./../models/pet');
 const User = require('./../models/user');
 const Application = require('./../models/application');
 
+const routeGuard = require('./../middleware/route-guard');
 const fileUpload = require('./../middleware/file-upload');
 const sendEmail = require('./../utilities/send-email');
 
 const router = new express.Router();
 
-router.post('/', fileUpload.array('pictures', 10), async (req, res, next) => {
-  const pictures = req.files.map((file) => file.path);
-  const {
-    name,
-    species,
-    breed,
-    age,
-    size,
-    gender,
-    qualities,
-    sterilized,
-    conditions,
-    description
-  } = req.body;
-  try {
-    const pet = await Pet.create({
+router.post(
+  '/',
+  routeGuard,
+  fileUpload.array('pictures', 10),
+  async (req, res, next) => {
+    const pictures = req.files.map((file) => file.path);
+    const {
       name,
       species,
       breed,
@@ -36,15 +28,29 @@ router.post('/', fileUpload.array('pictures', 10), async (req, res, next) => {
       qualities,
       sterilized,
       conditions,
-      description,
-      shelter: req.user._id,
-      pictures
-    });
-    res.json({ pet });
-  } catch (error) {
-    next(error);
+      description
+    } = req.body;
+    try {
+      const pet = await Pet.create({
+        name,
+        species,
+        breed,
+        age,
+        size,
+        gender,
+        qualities,
+        sterilized,
+        conditions,
+        description,
+        shelter: req.user._id,
+        pictures
+      });
+      res.json({ pet });
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 router.get('/list', async (req, res, next) => {
   try {
@@ -55,7 +61,7 @@ router.get('/list', async (req, res, next) => {
   }
 });
 
-router.get('/random', async (req, res, next) => {
+router.get('/random', routeGuard, async (req, res, next) => {
   const preferences = req.user.preferences;
   const filter = {
     species: preferences.species,
@@ -95,7 +101,7 @@ router.patch('/:id', async (req, res, next) => {
   // ...
 });
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', routeGuard, async (req, res, next) => {
   try {
     await Pet.findByIdAndDelete(req.params.id);
     res.json({});
@@ -104,7 +110,7 @@ router.delete('/:id', async (req, res, next) => {
   }
 });
 
-router.post('/:id/adopt', async (req, res, next) => {
+router.post('/:id/adopt', routeGuard, async (req, res, next) => {
   try {
     const application = await Application.create({
       individual: req.user._id,
