@@ -5,11 +5,11 @@ import { savePreferences } from './../services/individual';
 import { speciesOptions, sizesOptions, qualitiesOptions } from './../common';
 
 class IndividualPreferences extends Component {
-  state = {
-    species: ['dog', 'cat'],
-    sizes: ['small', 'medium', 'large'],
-    qualities: []
-  };
+  constructor(props) {
+    super(props);
+    const { user } = props;
+    this.state = { ...user.preferences };
+  }
 
   handleFormSubmission = async event => {
     event.preventDefault();

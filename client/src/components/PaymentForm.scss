@@ -1,0 +1,8 @@
+@import '../styles/variables';
+
+.input--card {
+  padding: 1em;
+  margin-bottom: 1em;
+  box-shadow: 0.125em 0 0.75em -0.25em $color-shadow;
+  border-radius: 0.25em;
+}

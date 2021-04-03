@@ -1,8 +1,13 @@
 'use strict';
 
 const express = require('express');
+
 const Pet = require('./../models/pet');
+const User = require('./../models/user');
+const Application = require('./../models/application');
+
 const fileUpload = require('./../middleware/file-upload');
+const sendEmail = require('./../utilities/send-email');
 
 const router = new express.Router();
 
@@ -51,10 +56,18 @@ router.get('/list', async (req, res, next) => {
 });
 
 router.get('/random', async (req, res, next) => {
+  const preferences = req.user.preferences;
+  const filter = {
+    species: preferences.species,
+    size: preferences.sizes
+  };
+  if (preferences.qualities.length) {
+    filter.qualities = { $in: preferences.qualities };
+  }
   try {
-    const total = await Pet.count();
+    const total = await Pet.count(filter);
     const randomIndex = Math.floor(Math.random() * total);
-    const pet = await Pet.findOne().skip(randomIndex);
+    const pet = await Pet.findOne(filter).skip(randomIndex);
     res.json({ pet });
   } catch (error) {
     next(error);
@@ -63,8 +76,15 @@ router.get('/random', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const pet = await Pet.findById(req.params.id);
-    res.json({ pet });
+    const pet = await Pet.findById(req.params.id).populate('shelter', 'name');
+    let application = null;
+    if (req.user) {
+      application = await Application.findOne({
+        pet: req.params.id,
+        individual: req.user._id
+      });
+    }
+    res.json({ pet, application });
   } catch (error) {
     next(error);
   }
@@ -80,6 +100,29 @@ router.delete('/:id', async (req, res, next) => {
     await Pet.findByIdAndDelete(req.params.id);
     res.json({});
   } catch (error) {
+    next(error);
+  }
+});
+
+router.post('/:id/adopt', async (req, res, next) => {
+  try {
+    const application = await Application.create({
+      individual: req.user._id,
+      pet: req.params.id
+    });
+    const pet = await Pet.findById(req.params.id);
+    const shelter = await User.findById(pet.shelter);
+    await sendEmail({
+      receiver: shelter.email,
+      subject: `${req.user.name} applied to adopt ${pet.name}`,
+      body: `
+        <p>${req.user.name} applied to adopt ${pet.name}.</p>
+        <p>${req.user.name}'s email is "${req.user.email}".</p>
+      `
+    });
+    res.json({ application });
+  } catch (error) {
+    console.log(error);
     next(error);
   }
 });

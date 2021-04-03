@@ -80,20 +80,13 @@ Here's the plan for the app.
 
 ## To dos
 
-- Add donation button in shelter page, opens `/shelter/donate` page
-- Donation Page
-- Adopt Pet Page
-- Individual and Shelter profiles
-- PetList component
-- Random pet should be in accordance with user preferences
-- Add sample.env file
-- Picture Slider
-- Payment Processor Component
-- Donation Model
-- Finish Single Pet page, display link to shelter
+- Individual profiles
+
+- Add sample.env files
+- Netlify configuration file
+- Deployment
 
 ## Wishlist
 
 - Add Material Icons
-- Nodemailer - When user applies to adopt pet, email shelter.
 - Google Maps

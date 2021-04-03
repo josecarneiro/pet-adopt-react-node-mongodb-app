@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import { signOut, verify } from './services/authentication';
 
@@ -13,10 +13,11 @@ import SignUp from './views/SignUp';
 import CreatePet from './views/CreatePet';
 import SinglePet from './views/SinglePet';
 import RandomPet from './views/RandomPet';
-import Demo from './views/Demo';
 import IndividualProfile from './views/IndividualProfile';
 import ShelterProfile from './views/ShelterProfile';
 import IndividualPreferences from './views/IndividualPreferences';
+import ShelterDonation from './views/ShelterDonation';
+import ShelterDonationThankYou from './views/ShelterDonationThankYou';
 
 class App extends Component {
   state = {
@@ -91,10 +92,25 @@ class App extends Component {
               />
               <Route path="/shelter/:id" component={ShelterProfile} exact />
               <ProtectedRoute
+                path="/shelter/:id/donate"
+                component={ShelterDonation}
+                authorized={user && user.role === 'individual'}
+                redirect="/sign-in"
+                exact
+              />
+              <ProtectedRoute
+                path="/shelter/:id/donate/thank-you"
+                component={ShelterDonationThankYou}
+                authorized={user && user.role === 'individual'}
+                redirect="/sign-in"
+                exact
+              />
+              <ProtectedRoute
                 path="/preferences"
                 render={props => (
                   <IndividualPreferences
                     {...props}
+                    user={user}
                     onUserChange={this.handleUserChange}
                   />
                 )}
@@ -102,7 +118,6 @@ class App extends Component {
                 redirect="/sign-in"
                 exact
               />
-              <Route path="/demo" component={Demo} exact />
               {/* <ProtectedRoute
               path="/private"
               render={props => <Private {...props} user={user} />}

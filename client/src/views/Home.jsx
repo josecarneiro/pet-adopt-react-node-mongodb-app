@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Component } from 'react';
+
 import { listPets } from './../services/pet';
-import PetItem from './../components/PetItem';
+import PetList from '../components/PetList';
 
 class Home extends Component {
   state = {
@@ -19,13 +19,7 @@ class Home extends Component {
         <header>
           <h1>Choose a pet below</h1>
         </header>
-        <div className="pet__list">
-          {this.state.pets.map(pet => (
-            <Link to={`/pet/${pet._id}`}>
-              <PetItem pet={pet} />
-            </Link>
-          ))}
-        </div>
+        <PetList pets={this.state.pets} />
       </main>
     );
   }

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { loadPet } from './../services/pet';
+import { loadPet, adoptPet } from './../services/pet';
 import { Helmet } from 'react-helmet-async';
+import PictureSlider from './../components/PictureSlider';
 import {
   sizesOptions,
   speciesOptions,
@@ -13,13 +14,19 @@ import './SinglePet.scss';
 
 class SinglePet extends Component {
   state = {
-    pet: null
+    pet: null,
+    application: null
   };
 
   async componentDidMount() {
-    const pet = await loadPet(this.props.match.params.id);
-    this.setState({ pet });
+    const { pet, application } = await loadPet(this.props.match.params.id);
+    this.setState({ pet, application });
   }
+
+  handleAdoptionApplication = async () => {
+    const application = await adoptPet(this.props.match.params.id);
+    this.setState({ application });
+  };
 
   render() {
     const pet = this.state.pet;
@@ -30,9 +37,7 @@ class SinglePet extends Component {
             <Helmet>
               <title>Pet Adopt - Adopt {pet.name}</title>
             </Helmet>
-            {pet.pictures.length && (
-              <img src={pet.pictures[0]} alt={pet.name} />
-            )}
+            {!!pet.pictures.length && <PictureSlider pictures={pet.pictures} />}
             <h1>{pet.name}</h1>
             <span>
               {speciesOptions.find(({ value }) => value === pet.species).label}{' '}
@@ -52,10 +57,18 @@ class SinglePet extends Component {
               </strong>
             ))}
             {pet.description && <p>{pet.description}</p>}
-            <Link>Shelter</Link>
-            <Link className="button" to="/pet/id/adopt">
-              Adopt this Pet
-            </Link>
+            <span>
+              Up for adoption at{' '}
+              <Link to={`/shelter/${pet.shelter._id}`}>{pet.shelter.name}</Link>
+            </span>
+            <br />
+            <button
+              className="button"
+              disabled={this.state.application}
+              onClick={this.handleAdoptionApplication}
+            >
+              {(this.state.application && 'Applied!') || 'Apply for Adoption'}
+            </button>
           </>
         )}
       </main>

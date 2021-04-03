@@ -17,7 +17,9 @@ export const loadRandomPet = async () => {
 
 export const loadPet = async id => {
   const response = await api.get(`/pet/${id}`);
-  return response.data.pet;
+  const pet = response.data.pet;
+  const application = response.data.application;
+  return { pet, application };
 };
 
 export const editPet = async (id, data) => {
@@ -27,4 +29,9 @@ export const editPet = async (id, data) => {
 
 export const deletePet = async id => {
   await api.delete(`/pet/${id}`);
+};
+
+export const adoptPet = async id => {
+  const response = await api.post(`/pet/${id}/adopt`);
+  return response.data.application;
 };

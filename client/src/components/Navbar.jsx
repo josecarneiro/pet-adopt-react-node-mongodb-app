@@ -21,6 +21,9 @@ const Navbar = ({ user, onSignOut }) => {
               <img src={user.profilePicture} alt={user.name} />
             )}
             <Link to={`/${user.role}/${user._id}`}>{user.name}</Link>
+            {user.role === 'individual' && (
+              <Link to="/preferences">Preferences</Link>
+            )}
             <button onClick={onSignOut}>Sign Out</button>
           </>
         )) || (
